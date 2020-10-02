@@ -27,12 +27,8 @@ class SSHTunnel {
                 address: { ip: opts.host, port: opts.port || 22 }
             };
             node.client.on('close', () => {
-                console.log(node.address, 'client close');
                 node.connected = false;
             });
-            node.client.on('error', (err) => { console.log(node.address, 'client error'); });
-            node.client.on('end', (err) => { console.log(node.address, 'client end'); });
-            node.client.on('close', (err) => { console.log(node.address, 'client close'); });
             if (previousNode)
                 previousNode.target = node.address;
             previousNode = node;
@@ -46,22 +42,6 @@ class SSHTunnel {
             client.forwardOut(dummyAddress.ip, dummyAddress.port, target.ip, target.port, (err, channel) => {
                 if (err)
                     return reject(err);
-                console.log(target, 'channel create');
-                channel.on('close', () => {
-                    console.log(target, 'channel close');
-                });
-                channel.on('exit', () => {
-                    console.log(target, 'channel exit');
-                });
-                channel.on('end', () => {
-                    console.log(target, 'channel end');
-                });
-                channel.on('error', () => {
-                    console.log(target, 'channel error');
-                });
-                channel.on('pause', () => {
-                    console.log(target, 'channel pause');
-                });
                 return resolve(channel);
             });
         });

@@ -116,11 +116,7 @@ class SSHTunnel {
     }
     async getSocket() {
         let channel;
-        let previousNode;
-        for (const node of this.nodes) {
-            await node.connect();
-            previousNode = node;
-        }
+        const previousNode = this.nodes[this.nodes.length - 1];
         if (previousNode) {
             channel = await previousNode.getChannel(this.target);
             return channel;

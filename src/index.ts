@@ -123,11 +123,7 @@ export class SSHTunnel {
 
   public async getSocket(): Promise<ssh2.ClientChannel | net.Socket> {
     let channel: ssh2.ClientChannel;
-    let previousNode: Node;
-    for (const node of this.nodes) {
-      await node.connect();
-      previousNode = node;
-    }
+    const previousNode: Node = this.nodes[this.nodes.length-1];
     if (previousNode) {
       channel = await previousNode.getChannel(this.target);
       return channel;

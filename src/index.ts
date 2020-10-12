@@ -35,16 +35,14 @@ export class Node {
     this.address = {ip: opts.host, port: opts.port || 22};
     this.previousNode = previousNode;
     this.client.on('close', () => {
-      console.log('node disconnect', this.address);
       this.connected = false;
     });
     this.client.on('error', (err) => {
       if (err.message === "Keepalive timeout" || err.level === "client-timeout") {
-        console.log("Keepalive Timeout, reconnecting", this.address.ip, this.address.port);
         this.connected = false;
         this.connect();
       } else {
-        console.error('ERROR ssh client', this.address.ip, this.address.port, err);
+        throw err;
       }
     });
   }
